@@ -1,16 +1,24 @@
-# Private graders for the public vgi.agent_test_tasks in the worker's catalog metadata.
-# `vgi-lint lint --ai` runs an agent on each prompt and grades it with check_sql.
-# See https://github.com/Query-farm/vgi-lint-check (VGI920).
-tasks:
-  - name: formal_greeting
-    reference_sql: SELECT starter.main.greet('Grace', 'formal') AS greeting
-  - name: sum_of_squares
-    reference_sql: SELECT sum(squared) AS total FROM starter.main.sequence_table(10)
-  - name: stepped_sequence
-    reference_sql: SELECT n FROM starter.main.sequence_table(4, step := 5) ORDER BY n
-  # Reads the public demo API (https://vgi-starter-api.query-farm.services/v1).
-  - name: items_per_category
-    check_sql: >-
-      SELECT count(*) = 3 AND sum(items) = 25
-      FROM (SELECT category, count(*) AS items
-            FROM starter.main.fetch_items('https://vgi-starter-api.query-farm.services/v1') GROUP BY category)
+{
+  "tasks": [
+    {
+      "name": "surveys",
+      "reference_sql": "SELECT survey_abbreviation, survey_name FROM bls.main.surveys() ORDER BY survey_abbreviation"
+    },
+    {
+      "name": "popular_series",
+      "reference_sql": "SELECT series_id FROM bls.main.popular_series(survey := 'CU') ORDER BY series_id"
+    },
+    {
+      "name": "observations",
+      "reference_sql": "SELECT year, period, value FROM bls.main.observations(['LNS14000000'], 2024, 2024) ORDER BY year, period"
+    },
+    {
+      "name": "series",
+      "reference_sql": "SELECT series_id, series_title, seasonality FROM bls.main.series(['LNS14000000'], 2024, 2024) ORDER BY series_id"
+    },
+    {
+      "name": "latest",
+      "reference_sql": "SELECT series_id, year, period, value FROM bls.main.latest('LNS14000000') ORDER BY year, period"
+    }
+  ]
+}

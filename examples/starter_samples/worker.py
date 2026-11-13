@@ -5,13 +5,13 @@ To add a function: write it (see ``greet.py`` / ``sequence.py`` /
 
 Run it:
 
-    vgi-starter-worker                      # stdio: what DuckDB launches by default
-    vgi-starter-worker --http --port 8000   # HTTP: for Docker / hosted deploys
-    vgi-starter-worker --help
+    vgi-bls-worker                      # stdio: what DuckDB launches by default
+    vgi-bls-worker --http --port 8000   # HTTP: for Docker / hosted deploys
+    vgi-bls-worker --help
 
 Attach it from DuckDB:
 
-    ATTACH 'starter' (TYPE vgi, LOCATION '/abs/path/to/.venv/bin/vgi-starter-worker');
+    ATTACH 'bls' (TYPE vgi, LOCATION '/abs/path/to/.venv/bin/vgi-bls-worker');
 """
 
 from __future__ import annotations
@@ -60,7 +60,7 @@ def _stamp_example_queries(functions: list[type[Any]]) -> list[dict[str, str]]:
 _ALL_EXAMPLES = _stamp_example_queries(FUNCTIONS)
 
 
-class StarterWorker(Worker):
+class RecipeWorker(Worker):
     """The worker process: one catalog, one ``main`` schema."""
 
     catalog = Catalog(
@@ -74,7 +74,7 @@ class StarterWorker(Worker):
                 comment=SCHEMA_DOC_MD,
                 functions=FUNCTIONS,
                 tags={
-                    "vgi.title": "Starter Functions",
+                    "vgi.title": "Bls Functions",
                     "domain": "examples",
                     "vgi.keywords": keywords_array("greeting, sequence, generator, rest api, pagination"),
                     "vgi.doc_llm": SCHEMA_DOC_LLM,
@@ -91,7 +91,7 @@ class StarterWorker(Worker):
 
 def main() -> None:
     """Console-script entry point: parse ``--http`` / ``--unix`` / logging flags and serve."""
-    StarterWorker.main()
+    RecipeWorker.main()
 
 
 if __name__ == "__main__":

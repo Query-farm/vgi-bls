@@ -1,0 +1,237 @@
+{
+  "schema_version": 1,
+  "catalog": "bls",
+  "worker": [
+    ".venv/bin/vgi-bls-worker"
+  ],
+  "api_base_url": "https://api.bls.gov/publicAPI/v2",
+  "secret_type": "bls_api",
+  "key_required": false,
+  "credential_check_sql": "SELECT count(*) FROM bls.main.series(['LNS14000000'], 2024, 2024)",
+  "checks": [
+    {
+      "name": "survey discovery",
+      "sql": "SELECT survey_abbreviation FROM bls.main.surveys() ORDER BY survey_abbreviation",
+      "rows": [
+        [
+          "CU"
+        ],
+        [
+          "LN"
+        ]
+      ]
+    },
+    {
+      "name": "survey capabilities",
+      "sql": "SELECT allows_net_change, allows_percent_change, has_annual_averages FROM bls.main.surveys(survey := 'CU')",
+      "rows": [
+        [
+          false,
+          true,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "popular series",
+      "sql": "SELECT series_id FROM bls.main.popular_series() ORDER BY series_id",
+      "rows": [
+        [
+          "CUUR0000SA0"
+        ],
+        [
+          "LNS14000000"
+        ]
+      ]
+    },
+    {
+      "name": "survey popular series",
+      "sql": "SELECT series_id FROM bls.main.popular_series(survey := 'CU')",
+      "rows": [
+        [
+          "CUUR0000SA0"
+        ]
+      ]
+    },
+    {
+      "name": "batch series aggregation",
+      "sql": "SELECT count(*), count(value), sum(value) FROM bls.main.observations(['LNS14000000','CUUR0000SA0'], 2024, 2024)",
+      "rows": [
+        [
+          6,
+          4,
+          12.5
+        ]
+      ]
+    },
+    {
+      "name": "periods and original values",
+      "sql": "SELECT year, period, value_text, value FROM bls.main.observations(['LNS14000000'], 2024, 2024) ORDER BY period",
+      "rows": [
+        [
+          2024,
+          "M01",
+          "2.50",
+          2.5
+        ],
+        [
+          2024,
+          "M02",
+          "-",
+          null
+        ],
+        [
+          2024,
+          "M12",
+          "3.75",
+          3.75
+        ]
+      ]
+    },
+    {
+      "name": "annual average period",
+      "sql": "SELECT period, value FROM bls.main.observations(['LNS14000000'], 2024, 2024, annual_average := true) WHERE period='M13'",
+      "rows": [
+        [
+          "M13",
+          3.25
+        ]
+      ]
+    },
+    {
+      "name": "calculation metadata",
+      "sql": "SELECT json_extract_string(calculations_json, '$.pct_changes.1') FROM bls.main.observations(['LNS14000000'], 2024, 2024, calculations := true, max_rows := 1)",
+      "rows": [
+        [
+          "0.2"
+        ]
+      ]
+    },
+    {
+      "name": "series catalog",
+      "sql": "SELECT series_id, series_title, seasonality FROM bls.main.series(['LNS14000000'], 2024, 2024)",
+      "rows": [
+        [
+          "LNS14000000",
+          "Fixture LNS14000000",
+          "Seasonally Adjusted"
+        ]
+      ]
+    },
+    {
+      "name": "latest observation",
+      "sql": "SELECT series_id, year, period, value, latest FROM bls.main.latest('LNS14000000')",
+      "rows": [
+        [
+          "LNS14000000",
+          2024,
+          "M12",
+          3.75,
+          true
+        ]
+      ]
+    },
+    {
+      "name": "encoded identifier",
+      "sql": "SELECT series_id FROM bls.main.latest('TEST#ID')",
+      "rows": [
+        [
+          "TEST#ID"
+        ]
+      ]
+    },
+    {
+      "name": "empty observations",
+      "sql": "SELECT count(*) FROM bls.main.observations(['EMPTY'], 2024, 2024)",
+      "rows": [
+        [
+          0
+        ]
+      ]
+    },
+    {
+      "name": "list result envelope",
+      "sql": "SELECT count(*) FROM bls.main.observations(['LIST'], 2024, 2024)",
+      "rows": [
+        [
+          3
+        ]
+      ]
+    },
+    {
+      "name": "explicit cap",
+      "sql": "SELECT count(*) FROM bls.main.observations(['LNS14000000'], 2024, 2024, max_rows := 1)",
+      "rows": [
+        [
+          1
+        ]
+      ]
+    }
+  ],
+  "error_checks": [
+    {
+      "name": "warning response rejected",
+      "sql": "SELECT * FROM bls.main.observations(['WARNING'], 2024, 2024)",
+      "message": "warnings or partial"
+    },
+    {
+      "name": "missing series rejected",
+      "sql": "SELECT * FROM bls.main.observations(['MISSING','LNS14000000'], 2024, 2024)",
+      "message": "partial result"
+    },
+    {
+      "name": "duplicate observations rejected",
+      "sql": "SELECT * FROM bls.main.observations(['DUPLICATE'], 2024, 2024)",
+      "message": "duplicate observation"
+    },
+    {
+      "name": "corrupt value rejected",
+      "sql": "SELECT * FROM bls.main.observations(['BADVALUE'], 2024, 2024)",
+      "message": "unrecognized numeric value"
+    },
+    {
+      "name": "year overrun rejected",
+      "sql": "SELECT * FROM bls.main.observations(['OUTSIDE'], 2024, 2024)",
+      "message": "outside the requested years"
+    },
+    {
+      "name": "duplicate IDs rejected",
+      "sql": "SELECT * FROM bls.main.observations(['A','A'], 2024, 2024)",
+      "message": "must be unique"
+    },
+    {
+      "name": "too many years rejected",
+      "sql": "SELECT * FROM bls.main.observations(['A'], 2000, 2020)",
+      "message": "20 inclusive years"
+    }
+  ],
+  "live_checks": [
+    {
+      "name": "live surveys",
+      "sql": "SELECT count(*) FROM bls.main.surveys(survey := 'CU') WHERE survey_abbreviation='CU'",
+      "rows": [
+        [
+          1
+        ]
+      ]
+    },
+    {
+      "name": "live observations",
+      "sql": "SELECT count(*) = 12 AND count(value) = 12 FROM bls.main.observations(['LNS14000000'], 2024, 2024)",
+      "rows": [
+        [
+          true
+        ]
+      ]
+    },
+    {
+      "name": "live popular series",
+      "sql": "SELECT count(*) > 0 FROM bls.main.popular_series(survey := 'CU')",
+      "rows": [
+        [
+          true
+        ]
+      ]
+    }
+  ]
+}

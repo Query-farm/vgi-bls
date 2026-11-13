@@ -1,0 +1,159 @@
+# BLS contract: public access plus separately authenticated registered features.
+require vgi
+
+require-env BLS_WORKER
+
+statement ok
+LOAD json;
+
+statement ok
+ATTACH 'bls' (TYPE vgi, LOCATION '{BLS_WORKER}');
+
+query I
+SELECT count(*) FROM bls.main.observations(['LNS14000000'], 2024, 2024);
+----
+3
+
+statement error
+SELECT count(*) FROM bls.main.series(['LNS14000000'], 2024, 2024);
+----
+BLS_API_KEY
+
+statement ok
+CREATE SECRET bls_fixture (TYPE bls_api, API_KEY '00000000000000000000000000000000');
+
+# survey discovery
+query T
+SELECT survey_abbreviation FROM bls.main.surveys() ORDER BY survey_abbreviation;
+----
+CU
+LN
+
+# survey capabilities
+query TTT
+SELECT allows_net_change, allows_percent_change, has_annual_averages FROM bls.main.surveys(survey := 'CU');
+----
+false	true	true
+
+# popular series
+query T
+SELECT series_id FROM bls.main.popular_series() ORDER BY series_id;
+----
+CUUR0000SA0
+LNS14000000
+
+# survey popular series
+query T
+SELECT series_id FROM bls.main.popular_series(survey := 'CU');
+----
+CUUR0000SA0
+
+# batch series aggregation
+query TTT
+SELECT count(*), count(value), sum(value) FROM bls.main.observations(['LNS14000000','CUUR0000SA0'], 2024, 2024);
+----
+6	4	12.5
+
+# periods and original values
+query TTTT
+SELECT year, period, value_text, value FROM bls.main.observations(['LNS14000000'], 2024, 2024) ORDER BY period;
+----
+2024	M01	2.50	2.5
+2024	M02	-	NULL
+2024	M12	3.75	3.75
+
+# annual average period
+query TT
+SELECT period, value FROM bls.main.observations(['LNS14000000'], 2024, 2024, annual_average := true) WHERE period='M13';
+----
+M13	3.25
+
+# calculation metadata
+query T
+SELECT json_extract_string(calculations_json, '$.pct_changes.1') FROM bls.main.observations(['LNS14000000'], 2024, 2024, calculations := true, max_rows := 1);
+----
+0.2
+
+# series catalog
+query TTT
+SELECT series_id, series_title, seasonality FROM bls.main.series(['LNS14000000'], 2024, 2024);
+----
+LNS14000000	Fixture LNS14000000	Seasonally Adjusted
+
+# latest observation
+query TTTTT
+SELECT series_id, year, period, value, latest FROM bls.main.latest('LNS14000000');
+----
+LNS14000000	2024	M12	3.75	true
+
+# encoded identifier
+query T
+SELECT series_id FROM bls.main.latest('TEST#ID');
+----
+TEST#ID
+
+# empty observations
+query T
+SELECT count(*) FROM bls.main.observations(['EMPTY'], 2024, 2024);
+----
+0
+
+# list result envelope
+query T
+SELECT count(*) FROM bls.main.observations(['LIST'], 2024, 2024);
+----
+3
+
+# explicit cap
+query T
+SELECT count(*) FROM bls.main.observations(['LNS14000000'], 2024, 2024, max_rows := 1);
+----
+1
+
+# warning response rejected
+statement error
+SELECT * FROM bls.main.observations(['WARNING'], 2024, 2024);
+----
+warnings or partial
+
+# missing series rejected
+statement error
+SELECT * FROM bls.main.observations(['MISSING','LNS14000000'], 2024, 2024);
+----
+partial result
+
+# duplicate observations rejected
+statement error
+SELECT * FROM bls.main.observations(['DUPLICATE'], 2024, 2024);
+----
+duplicate observation
+
+# corrupt value rejected
+statement error
+SELECT * FROM bls.main.observations(['BADVALUE'], 2024, 2024);
+----
+unrecognized numeric value
+
+# year overrun rejected
+statement error
+SELECT * FROM bls.main.observations(['OUTSIDE'], 2024, 2024);
+----
+outside the requested years
+
+# duplicate IDs rejected
+statement error
+SELECT * FROM bls.main.observations(['A','A'], 2024, 2024);
+----
+must be unique
+
+# too many years rejected
+statement error
+SELECT * FROM bls.main.observations(['A'], 2000, 2020);
+----
+20 inclusive years
+
+statement ok
+DROP SECRET bls_fixture;
+
+statement ok
+DETACH bls;
