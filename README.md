@@ -98,10 +98,10 @@ ORDER BY series_id, year, period;
 ## HTTP authentication and deployment
 
 The same executable supports stdio, Unix sockets and HTTP. Configure the SDK's
-blsrer authentication for an HTTP service:
+bearer authentication for an HTTP service:
 
 ```sh
-export VGI_BLSRER_TOKENS="$(openssl rand -hex 32)=analyst"
+export VGI_BEARER_TOKENS="$(openssl rand -hex 32)=analyst"
 vgi-bls-worker --http --host 127.0.0.1 --port 8000
 ```
 
@@ -116,11 +116,11 @@ Terminate TLS at your service ingress and avoid exposing an unauthenticated port
 INSTALL httpfs FROM core;
 LOAD httpfs;
 ATTACH 'bls' (TYPE vgi, LOCATION 'https://your-worker.example',
-              blsrer_token 'your-worker-blsrer-token');
+              bearer_token 'your-worker-bearer-token');
 CREATE SECRET bls_key (TYPE bls_api, API_KEY 'your-BLS-registration-key');
 ```
 
-The worker blsrer token and the BLS API key serve separate purposes. Bearer tokens
+The worker bearer token and the BLS API key serve separate purposes. Bearer tokens
 are never sent to BLS. API keys are resolved for each invocation and kept out of
 continuation state. Errors omit upstream bodies, URLs and exception chains that
 could expose query-string credentials. Worker stdout is reserved for Arrow RPC.
