@@ -1,0 +1,242 @@
+{
+  "query": "SELECT * FROM duckdb_functions() WHERE database_name='bls'",
+  "columns": [
+    "database_name",
+    "database_oid",
+    "schema_name",
+    "function_name",
+    "alias_of",
+    "function_type",
+    "description",
+    "comment",
+    "tags",
+    "return_type",
+    "parameters",
+    "parameter_types",
+    "varargs",
+    "macro_definition",
+    "has_side_effects",
+    "internal",
+    "extension_name",
+    "function_oid",
+    "examples",
+    "stability",
+    "categories"
+  ],
+  "rows": [
+    [
+      "bls",
+      "22592",
+      "main",
+      "popular_series",
+      null,
+      "table",
+      "List popular series identifiers overall or for a specific survey. Only series_id is returned; titles are not included. Call series() with registration to retrieve titles and descriptions. This is not an exhaustive series catalog.",
+      null,
+      {
+        "vgi.category": "api",
+        "vgi.doc_llm": "List popular series identifiers overall or for a specific survey. Only series_id is returned; titles are not included. Call series() with registration to retrieve titles and descriptions. This is not an exhaustive series catalog. Returns typed columns series_id. Retrieve labor, employment, price and productivity series with period codes, footnotes, calculations and survey metadata. Use a bls_api secret with api_key or BLS_API_KEY for registered access. Unregistered access has lower limits. Request explicit years and series identifiers; period codes retain annual averages and non-monthly frequencies without inventing dates. NULL arguments are rejected. Missing optional response fields return NULL. Upstream errors fail the query; SQL WHERE filters are local.",
+        "vgi.doc_md": "## popular_series\n\nList popular series identifiers overall or for a specific survey. Only series_id is returned; titles are not included. Call series() with registration to retrieve titles and descriptions. This is not an exhaustive series catalog. Returns typed columns series_id. Retrieve labor, employment, price and productivity series with period codes, footnotes, calculations and survey metadata. Use a bls_api secret with api_key or BLS_API_KEY for registered access. Unregistered access has lower limits. Request explicit years and series identifiers; period codes retain annual averages and non-monthly frequencies without inventing dates. NULL arguments are rejected. Missing optional response fields return NULL. Upstream errors fail the query; SQL WHERE filters are local.",
+        "vgi.example_queries": "[{\"description\": \"Discover popular series\", \"sql\": \"SELECT series_id FROM bls.main.popular_series(survey := 'CU') ORDER BY series_id\"}, {\"description\": \"Label popular series with the name of the survey they belong to; a BLS series identifier starts with its two-letter survey abbreviation\", \"sql\": \"SELECT p.series_id, s.survey_abbreviation, s.survey_name FROM bls.main.popular_series() AS p JOIN bls.main.surveys() AS s ON s.survey_abbreviation = left(p.series_id, 2) ORDER BY p.series_id\"}]",
+        "vgi.keywords": "[\"bls\", \"economics\", \"time series\", \"popular_series\"]",
+        "vgi.result_columns_schema": "[{\"name\": \"series_id\", \"type\": \"VARCHAR\", \"description\": \"BLS series identifier to pass to observations.\"}]",
+        "vgi.title": "Discover popular series"
+      },
+      null,
+      [
+        "survey",
+        "max_rows"
+      ],
+      [
+        "VARCHAR",
+        "BIGINT"
+      ],
+      null,
+      null,
+      null,
+      true,
+      null,
+      22598,
+      [
+        "SELECT series_id FROM bls.main.popular_series(survey := 'CU') ORDER BY series_id",
+        "SELECT p.series_id, s.survey_abbreviation, s.survey_name FROM bls.main.popular_series() AS p JOIN bls.main.surveys() AS s ON s.survey_abbreviation = left(p.series_id, 2) ORDER BY p.series_id"
+      ],
+      null,
+      []
+    ],
+    [
+      "bls",
+      "22592",
+      "main",
+      "series",
+      null,
+      "table",
+      "Retrieve source catalog metadata for series IDs and an explicit year window. Requires BLS registration. The BLS API returns catalog metadata alongside observations; this function emits only the catalog.",
+      null,
+      {
+        "vgi.category": "api",
+        "vgi.doc_llm": "Retrieve source catalog metadata for series IDs and an explicit year window. Requires BLS registration. The BLS API returns catalog metadata alongside observations; this function emits only the catalog. Returns typed columns series_id, series_title, survey_name, survey_abbreviation, seasonality, measure_data_type, area, catalog_json. Retrieve labor, employment, price and productivity series with period codes, footnotes, calculations and survey metadata. Use a bls_api secret with api_key or BLS_API_KEY for registered access. Unregistered access has lower limits. Request explicit years and series identifiers; period codes retain annual averages and non-monthly frequencies without inventing dates. NULL arguments are rejected. Missing optional response fields return NULL. Upstream errors fail the query; SQL WHERE filters are local.",
+        "vgi.doc_md": "## series\n\nRetrieve source catalog metadata for series IDs and an explicit year window. Requires BLS registration. The BLS API returns catalog metadata alongside observations; this function emits only the catalog. Returns typed columns series_id, series_title, survey_name, survey_abbreviation, seasonality, measure_data_type, area, catalog_json. Retrieve labor, employment, price and productivity series with period codes, footnotes, calculations and survey metadata. Use a bls_api secret with api_key or BLS_API_KEY for registered access. Unregistered access has lower limits. Request explicit years and series identifiers; period codes retain annual averages and non-monthly frequencies without inventing dates. NULL arguments are rejected. Missing optional response fields return NULL. Upstream errors fail the query; SQL WHERE filters are local.",
+        "vgi.example_queries": "[{\"description\": \"Inspect series metadata\", \"sql\": \"SELECT series_id, series_title, seasonality FROM bls.main.series(['LNS14000000'], 2024, 2024) ORDER BY series_id\"}]",
+        "vgi.keywords": "[\"bls\", \"economics\", \"time series\", \"series\"]",
+        "vgi.result_columns_schema": "[{\"name\": \"series_id\", \"type\": \"VARCHAR\", \"description\": \"BLS series identifier.\"}, {\"name\": \"series_title\", \"type\": \"VARCHAR\", \"description\": \"Full published description.\"}, {\"name\": \"survey_name\", \"type\": \"VARCHAR\", \"description\": \"Survey name.\"}, {\"name\": \"survey_abbreviation\", \"type\": \"VARCHAR\", \"description\": \"Survey abbreviation.\"}, {\"name\": \"seasonality\", \"type\": \"VARCHAR\", \"description\": \"Seasonal adjustment description.\"}, {\"name\": \"measure_data_type\", \"type\": \"VARCHAR\", \"description\": \"Published measurement type.\"}, {\"name\": \"area\", \"type\": \"VARCHAR\", \"description\": \"Published geography.\"}, {\"name\": \"catalog_json\", \"type\": \"VARCHAR\", \"description\": \"Complete source catalog, including survey-specific dimensions.\"}]",
+        "vgi.title": "Inspect series metadata"
+      },
+      null,
+      [
+        "series_ids",
+        "start_year",
+        "end_year",
+        "max_rows"
+      ],
+      [
+        "VARCHAR[]",
+        "BIGINT",
+        "BIGINT",
+        "BIGINT"
+      ],
+      null,
+      null,
+      null,
+      true,
+      null,
+      22599,
+      [
+        "SELECT series_id, series_title, seasonality FROM bls.main.series(['LNS14000000'], 2024, 2024) ORDER BY series_id"
+      ],
+      null,
+      []
+    ],
+    [
+      "bls",
+      "22592",
+      "main",
+      "observations",
+      null,
+      "table",
+      "Retrieve observations for a batch of unique series IDs and inclusive start/end years. Registered access supports 50 series and 20 years; unregistered access supports 25 and 10. Optional annual averages, catalog, calculations and aspects require registration. BLS warnings fail the query to prevent partial results.",
+      null,
+      {
+        "vgi.category": "api",
+        "vgi.doc_llm": "Retrieve observations for a batch of unique series IDs and inclusive start/end years. Registered access supports 50 series and 20 years; unregistered access supports 25 and 10. Optional annual averages, catalog, calculations and aspects require registration. BLS warnings fail the query to prevent partial results. Returns typed columns series_id, year, period, period_name, value, value_text, latest, footnotes_json, calculations_json, aspects_json, catalog_json. Retrieve labor, employment, price and productivity series with period codes, footnotes, calculations and survey metadata. Use a bls_api secret with api_key or BLS_API_KEY for registered access. Unregistered access has lower limits. Request explicit years and series identifiers; period codes retain annual averages and non-monthly frequencies without inventing dates. NULL arguments are rejected. Missing optional response fields return NULL. Upstream errors fail the query; SQL WHERE filters are local.",
+        "vgi.doc_md": "## observations\n\nRetrieve observations for a batch of unique series IDs and inclusive start/end years. Registered access supports 50 series and 20 years; unregistered access supports 25 and 10. Optional annual averages, catalog, calculations and aspects require registration. BLS warnings fail the query to prevent partial results. Returns typed columns series_id, year, period, period_name, value, value_text, latest, footnotes_json, calculations_json, aspects_json, catalog_json. Retrieve labor, employment, price and productivity series with period codes, footnotes, calculations and survey metadata. Use a bls_api secret with api_key or BLS_API_KEY for registered access. Unregistered access has lower limits. Request explicit years and series identifiers; period codes retain annual averages and non-monthly frequencies without inventing dates. NULL arguments are rejected. Missing optional response fields return NULL. Upstream errors fail the query; SQL WHERE filters are local.",
+        "vgi.example_queries": "[{\"description\": \"Retrieve labor statistics\", \"sql\": \"SELECT year, period, value FROM bls.main.observations(['LNS14000000'], 2024, 2024) ORDER BY year, period\"}, {\"description\": \"Label 2024 annual averages (period M13) with each series' published title and seasonality; BLS publishes annual averages for not seasonally adjusted series such as LNU04000000 and CUUR0000SA0, and they require a BLS registration key\", \"sql\": \"SELECT o.series_id, m.series_title, m.seasonality, o.value AS annual_average FROM bls.main.observations(['LNU04000000', 'CUUR0000SA0'], 2024, 2024, annual_average := true) AS o JOIN bls.main.series(['LNU04000000', 'CUUR0000SA0'], 2024, 2024) AS m USING (series_id) WHERE o.period = 'M13' ORDER BY o.series_id\"}]",
+        "vgi.keywords": "[\"bls\", \"economics\", \"time series\", \"observations\"]",
+        "vgi.result_columns_schema": "[{\"name\": \"series_id\", \"type\": \"VARCHAR\", \"description\": \"BLS series identifier.\"}, {\"name\": \"year\", \"type\": \"BIGINT\", \"description\": \"Year of the observation.\"}, {\"name\": \"period\", \"type\": \"VARCHAR\", \"description\": \"Native period code; M13 denotes an annual average, not a thirteenth month.\"}, {\"name\": \"period_name\", \"type\": \"VARCHAR\", \"description\": \"Source period label.\"}, {\"name\": \"value\", \"type\": \"DOUBLE\", \"description\": \"Published numeric value; recognized unavailable/suppressed markers become NULL.\"}, {\"name\": \"value_text\", \"type\": \"VARCHAR\", \"description\": \"Original value text, preserving numeric precision and missing markers.\"}, {\"name\": \"latest\", \"type\": \"BOOLEAN\", \"description\": \"Source latest flag; NULL when BLS does not supply it.\"}, {\"name\": \"footnotes_json\", \"type\": \"VARCHAR\", \"description\": \"Source footnotes including preliminary/revised flags.\"}, {\"name\": \"calculations_json\", \"type\": \"VARCHAR\", \"description\": \"Net/percent changes when requested and available.\"}, {\"name\": \"aspects_json\", \"type\": \"VARCHAR\", \"description\": \"Survey-specific aspects, such as relative standard errors.\"}, {\"name\": \"catalog_json\", \"type\": \"VARCHAR\", \"description\": \"Source series catalog when include_catalog is enabled.\"}]",
+        "vgi.title": "Retrieve labor statistics"
+      },
+      null,
+      [
+        "series_ids",
+        "start_year",
+        "end_year",
+        "max_rows",
+        "include_catalog",
+        "calculations",
+        "aspects",
+        "annual_average"
+      ],
+      [
+        "VARCHAR[]",
+        "BIGINT",
+        "BIGINT",
+        "BIGINT",
+        "BOOLEAN",
+        "BOOLEAN",
+        "BOOLEAN",
+        "BOOLEAN"
+      ],
+      null,
+      null,
+      null,
+      true,
+      null,
+      22597,
+      [
+        "SELECT year, period, value FROM bls.main.observations(['LNS14000000'], 2024, 2024) ORDER BY year, period",
+        "SELECT o.series_id, m.series_title, m.seasonality, o.value AS annual_average FROM bls.main.observations(['LNU04000000', 'CUUR0000SA0'], 2024, 2024, annual_average := true) AS o JOIN bls.main.series(['LNU04000000', 'CUUR0000SA0'], 2024, 2024) AS m USING (series_id) WHERE o.period = 'M13' ORDER BY o.series_id"
+      ],
+      null,
+      []
+    ],
+    [
+      "bls",
+      "22592",
+      "main",
+      "latest",
+      null,
+      "table",
+      "Retrieve BLS's latest observation for a single series. Latest refers to observation period, not a real-time publication timestamp; use observations for reproducible year windows.",
+      null,
+      {
+        "vgi.category": "api",
+        "vgi.doc_llm": "Retrieve BLS's latest observation for a single series. Latest refers to observation period, not a real-time publication timestamp; use observations for reproducible year windows. Returns typed columns series_id, year, period, period_name, value, value_text, latest, footnotes_json, calculations_json, aspects_json, catalog_json. Retrieve labor, employment, price and productivity series with period codes, footnotes, calculations and survey metadata. Use a bls_api secret with api_key or BLS_API_KEY for registered access. Unregistered access has lower limits. Request explicit years and series identifiers; period codes retain annual averages and non-monthly frequencies without inventing dates. NULL arguments are rejected. Missing optional response fields return NULL. Upstream errors fail the query; SQL WHERE filters are local.",
+        "vgi.doc_md": "## latest\n\nRetrieve BLS's latest observation for a single series. Latest refers to observation period, not a real-time publication timestamp; use observations for reproducible year windows. Returns typed columns series_id, year, period, period_name, value, value_text, latest, footnotes_json, calculations_json, aspects_json, catalog_json. Retrieve labor, employment, price and productivity series with period codes, footnotes, calculations and survey metadata. Use a bls_api secret with api_key or BLS_API_KEY for registered access. Unregistered access has lower limits. Request explicit years and series identifiers; period codes retain annual averages and non-monthly frequencies without inventing dates. NULL arguments are rejected. Missing optional response fields return NULL. Upstream errors fail the query; SQL WHERE filters are local.",
+        "vgi.example_queries": "[{\"description\": \"Read latest observation\", \"sql\": \"SELECT series_id, year, period, value FROM bls.main.latest('LNS14000000') ORDER BY year, period\"}, {\"description\": \"Compare the latest unemployment rate with the same period one year earlier and the change; the observations window (2023-2026) must include the year before the latest period, so move it forward as new years are published\", \"sql\": \"SELECT l.year, l.period, l.value AS latest_value, p.value AS year_earlier_value, l.value - p.value AS change FROM bls.main.latest('LNS14000000') AS l JOIN bls.main.observations(['LNS14000000'], 2023, 2026) AS p ON p.series_id = l.series_id AND p.period = l.period AND p.year = l.year - 1 ORDER BY l.year, l.period\"}]",
+        "vgi.keywords": "[\"bls\", \"economics\", \"time series\", \"latest\"]",
+        "vgi.result_columns_schema": "[{\"name\": \"series_id\", \"type\": \"VARCHAR\", \"description\": \"BLS series identifier.\"}, {\"name\": \"year\", \"type\": \"BIGINT\", \"description\": \"Year of the observation.\"}, {\"name\": \"period\", \"type\": \"VARCHAR\", \"description\": \"Native period code; M13 denotes an annual average, not a thirteenth month.\"}, {\"name\": \"period_name\", \"type\": \"VARCHAR\", \"description\": \"Source period label.\"}, {\"name\": \"value\", \"type\": \"DOUBLE\", \"description\": \"Published numeric value; recognized unavailable/suppressed markers become NULL.\"}, {\"name\": \"value_text\", \"type\": \"VARCHAR\", \"description\": \"Original value text, preserving numeric precision and missing markers.\"}, {\"name\": \"latest\", \"type\": \"BOOLEAN\", \"description\": \"Source latest flag; NULL when BLS does not supply it.\"}, {\"name\": \"footnotes_json\", \"type\": \"VARCHAR\", \"description\": \"Source footnotes including preliminary/revised flags.\"}, {\"name\": \"calculations_json\", \"type\": \"VARCHAR\", \"description\": \"Net/percent changes when requested and available.\"}, {\"name\": \"aspects_json\", \"type\": \"VARCHAR\", \"description\": \"Survey-specific aspects, such as relative standard errors.\"}, {\"name\": \"catalog_json\", \"type\": \"VARCHAR\", \"description\": \"Source series catalog when include_catalog is enabled.\"}]",
+        "vgi.title": "Read latest observation"
+      },
+      null,
+      [
+        "series_id",
+        "max_rows"
+      ],
+      [
+        "VARCHAR",
+        "BIGINT"
+      ],
+      null,
+      null,
+      null,
+      true,
+      null,
+      22596,
+      [
+        "SELECT series_id, year, period, value FROM bls.main.latest('LNS14000000') ORDER BY year, period",
+        "SELECT l.year, l.period, l.value AS latest_value, p.value AS year_earlier_value, l.value - p.value AS change FROM bls.main.latest('LNS14000000') AS l JOIN bls.main.observations(['LNS14000000'], 2023, 2026) AS p ON p.series_id = l.series_id AND p.period = l.period AND p.year = l.year - 1 ORDER BY l.year, l.period"
+      ],
+      null,
+      []
+    ],
+    [
+      "bls",
+      "22592",
+      "main",
+      "surveys",
+      null,
+      "table",
+      "List BLS surveys or request capability flags for a specific survey using the optional survey argument.",
+      null,
+      {
+        "vgi.category": "api",
+        "vgi.doc_llm": "List BLS surveys or request capability flags for a specific survey using the optional survey argument. Returns typed columns survey_abbreviation, survey_name, allows_net_change, allows_percent_change, has_annual_averages. Retrieve labor, employment, price and productivity series with period codes, footnotes, calculations and survey metadata. Use a bls_api secret with api_key or BLS_API_KEY for registered access. Unregistered access has lower limits. Request explicit years and series identifiers; period codes retain annual averages and non-monthly frequencies without inventing dates. NULL arguments are rejected. Missing optional response fields return NULL. Upstream errors fail the query; SQL WHERE filters are local.",
+        "vgi.doc_md": "## surveys\n\nList BLS surveys or request capability flags for a specific survey using the optional survey argument. Returns typed columns survey_abbreviation, survey_name, allows_net_change, allows_percent_change, has_annual_averages. Retrieve labor, employment, price and productivity series with period codes, footnotes, calculations and survey metadata. Use a bls_api secret with api_key or BLS_API_KEY for registered access. Unregistered access has lower limits. Request explicit years and series identifiers; period codes retain annual averages and non-monthly frequencies without inventing dates. NULL arguments are rejected. Missing optional response fields return NULL. Upstream errors fail the query; SQL WHERE filters are local.",
+        "vgi.example_queries": "[{\"description\": \"Discover BLS surveys\", \"sql\": \"SELECT survey_abbreviation, survey_name FROM bls.main.surveys() ORDER BY survey_abbreviation\"}]",
+        "vgi.keywords": "[\"bls\", \"economics\", \"time series\", \"surveys\"]",
+        "vgi.result_columns_schema": "[{\"name\": \"survey_abbreviation\", \"type\": \"VARCHAR\", \"description\": \"BLS survey abbreviation.\"}, {\"name\": \"survey_name\", \"type\": \"VARCHAR\", \"description\": \"Published survey name.\"}, {\"name\": \"allows_net_change\", \"type\": \"BOOLEAN\", \"description\": \"Whether the survey supports net-change calculations; NULL if not supplied.\"}, {\"name\": \"allows_percent_change\", \"type\": \"BOOLEAN\", \"description\": \"Whether percent changes are supported; NULL if not supplied.\"}, {\"name\": \"has_annual_averages\", \"type\": \"BOOLEAN\", \"description\": \"Whether optional annual averages are supported; NULL if not supplied.\"}]",
+        "vgi.title": "Discover BLS surveys"
+      },
+      null,
+      [
+        "survey",
+        "max_rows"
+      ],
+      [
+        "VARCHAR",
+        "BIGINT"
+      ],
+      null,
+      null,
+      null,
+      true,
+      null,
+      22600,
+      [
+        "SELECT survey_abbreviation, survey_name FROM bls.main.surveys() ORDER BY survey_abbreviation"
+      ],
+      null,
+      []
+    ]
+  ]
+}

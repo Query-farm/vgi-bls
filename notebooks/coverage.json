@@ -1,0 +1,228 @@
+{
+  "schema_version": 1,
+  "catalogs": {
+    "released": {
+      "path": "coverage/catalog-released.json",
+      "sha256": "2acd3f0b426b41c19482be5fdfe5adbd865cf7889d727e09853fc8d425914216",
+      "review": {
+        "status": "approved",
+        "reviewer": "Codex /root/notebooks_ortools",
+        "reviewed_at": "2026-11-14T23:20:55.016504+00:00",
+        "catalog_sha256": "2acd3f0b426b41c19482be5fdfe5adbd865cf7889d727e09853fc8d425914216",
+        "notes": "All five named read functions retained, including required-registration series and optional registered fields. Both real runtimes expose five functions and no tables/views. Full native signatures match. Current source adds composed metadata examples, with no runtime/dependency implementation change. Analytical executions use release v0.1.0; current-interface mapping is separate from exact-runtime evidence."
+      }
+    },
+    "current": {
+      "path": "coverage/catalog-current.json",
+      "sha256": "6355cb62ae361fc6e5e655c2dc4dcf1acf6239717e87552c13461729c5680dba",
+      "review": {
+        "status": "approved",
+        "reviewer": "Codex /root/notebooks_ortools",
+        "reviewed_at": "2026-11-14T23:20:55.016504+00:00",
+        "catalog_sha256": "6355cb62ae361fc6e5e655c2dc4dcf1acf6239717e87552c13461729c5680dba",
+        "notes": "All five named read functions retained, including required-registration series and optional registered fields. Both real runtimes expose five functions and no tables/views. Full native signatures match. Current source adds composed metadata examples, with no runtime/dependency implementation change. Analytical executions use release v0.1.0; current-interface mapping is separate from exact-runtime evidence."
+      }
+    }
+  },
+  "notebooks": [
+    {
+      "path": "01_price_levels_and_inflation.ipynb",
+      "sha256": "fe0c7d1f2738ec1acd582efacdb8ca928de792a44cd5927bef919d2d404c578a",
+      "execution": {
+        "path": "coverage/run-01.json",
+        "sha256": "8cb44d17a66c99a45c3bd9a67e8393caf84e59dfd9fa16e71e4a82ba270151ab"
+      }
+    },
+    {
+      "path": "02_popular_does_not_mean_comparable.ipynb",
+      "sha256": "132d0318387e34eaa9733fd84fe13227e2ddf5f1d71e80a621507c82af768f2e",
+      "execution": {
+        "path": "coverage/run-02.json",
+        "sha256": "079c52641305c1d90f9298826ece3739828081c31eadb7b2a18b9041084b9456"
+      }
+    }
+  ],
+  "examples": [
+    {
+      "object": {
+        "schema": "main",
+        "name": "observations"
+      },
+      "notebook": "01_price_levels_and_inflation.ipynb",
+      "sql": [
+        {
+          "cell": "e12f2256",
+          "reference": "bls.main.observations"
+        }
+      ],
+      "narrative_cells": [
+        "b62c00b0"
+      ],
+      "result_cells": [
+        "afc5ea28",
+        "15da50c2",
+        "9cf5d391"
+      ],
+      "interpretation_cells": [
+        "9cf5d391"
+      ],
+      "review": {
+        "status": "approved",
+        "reviewer": "Codex /root/notebooks_ortools",
+        "reviewed_at": "2026-11-14T23:20:55.016504+00:00",
+        "notebook_sha256": "fe0c7d1f2738ec1acd582efacdb8ca928de792a44cd5927bef919d2d404c578a",
+        "catalog_sha256": [
+          "2acd3f0b426b41c19482be5fdfe5adbd865cf7889d727e09853fc8d425914216",
+          "6355cb62ae361fc6e5e655c2dc4dcf1acf6239717e87552c13461729c5680dba"
+        ],
+        "purpose": "Separate public price-index levels from twelve-month inflation and test display rebasing.",
+        "finding": "A successful official unregistered request supplies two series over2019–2024, retained as a derived144-row recording rather than HTTP bytes; complete calendar and same-month prior-year join preserve gaps. Exact source/rate fingerprints distinguish a pure rebasing experiment from revisions; replay reproduces the successful live retained rows and numeric values exactly; rebasing changes levels, not proportional rates."
+      }
+    },
+    {
+      "object": {
+        "schema": "main",
+        "name": "surveys"
+      },
+      "notebook": "02_popular_does_not_mean_comparable.ipynb",
+      "sql": [
+        {
+          "cell": "discovery-sql",
+          "reference": "bls.main.surveys"
+        }
+      ],
+      "narrative_cells": [
+        "metadata-story"
+      ],
+      "result_cells": [
+        "discovery-sql",
+        "metadata-sql",
+        "criteria-result"
+      ],
+      "interpretation_cells": [
+        "criteria-result"
+      ],
+      "review": {
+        "status": "approved",
+        "reviewer": "Codex /root/notebooks_ortools",
+        "reviewed_at": "2026-11-14T23:20:55.016504+00:00",
+        "notebook_sha256": "132d0318387e34eaa9733fd84fe13227e2ddf5f1d71e80a621507c82af768f2e",
+        "catalog_sha256": [
+          "2acd3f0b426b41c19482be5fdfe5adbd865cf7889d727e09853fc8d425914216",
+          "6355cb62ae361fc6e5e655c2dc4dcf1acf6239717e87552c13461729c5680dba"
+        ],
+        "purpose": "Join survey capabilities without converting omitted flags to false.",
+        "finding": "Three synthetic surveys contextualize five popular candidates. One candidate has unknown annual-average support; it is retained as NULL and not used as an unrelated monthly-selection condition. Entirely synthetic evidence, not live BLS catalog validation."
+      }
+    },
+    {
+      "object": {
+        "schema": "main",
+        "name": "popular_series"
+      },
+      "notebook": "02_popular_does_not_mean_comparable.ipynb",
+      "sql": [
+        {
+          "cell": "discovery-sql",
+          "reference": "bls.main.popular_series"
+        }
+      ],
+      "narrative_cells": [
+        "metadata-story"
+      ],
+      "result_cells": [
+        "discovery-sql",
+        "criteria-result",
+        "criteria-chart"
+      ],
+      "interpretation_cells": [
+        "criteria-result"
+      ],
+      "review": {
+        "status": "approved",
+        "reviewer": "Codex /root/notebooks_ortools",
+        "reviewed_at": "2026-11-14T23:20:55.016504+00:00",
+        "notebook_sha256": "132d0318387e34eaa9733fd84fe13227e2ddf5f1d71e80a621507c82af768f2e",
+        "catalog_sha256": [
+          "2acd3f0b426b41c19482be5fdfe5adbd865cf7889d727e09853fc8d425914216",
+          "6355cb62ae361fc6e5e655c2dc4dcf1acf6239717e87552c13461729c5680dba"
+        ],
+        "purpose": "Use a candidate list while checking measurement contracts independently.",
+        "finding": "Five synthetic popular IDs have neither rank scores nor enough dimensions to establish comparability. Metadata reduces them to two; the list is explicitly nonexhaustive and not an official popularity claim."
+      }
+    },
+    {
+      "object": {
+        "schema": "main",
+        "name": "series"
+      },
+      "notebook": "02_popular_does_not_mean_comparable.ipynb",
+      "sql": [
+        {
+          "cell": "metadata-sql",
+          "reference": "bls.main.series"
+        }
+      ],
+      "narrative_cells": [
+        "metadata-story"
+      ],
+      "result_cells": [
+        "metadata-sql",
+        "criteria-result",
+        "criteria-chart"
+      ],
+      "interpretation_cells": [
+        "criteria-result"
+      ],
+      "review": {
+        "status": "approved",
+        "reviewer": "Codex /root/notebooks_ortools",
+        "reviewed_at": "2026-11-14T23:20:55.016504+00:00",
+        "notebook_sha256": "132d0318387e34eaa9733fd84fe13227e2ddf5f1d71e80a621507c82af768f2e",
+        "catalog_sha256": [
+          "2acd3f0b426b41c19482be5fdfe5adbd865cf7889d727e09853fc8d425914216",
+          "6355cb62ae361fc6e5e655c2dc4dcf1acf6239717e87552c13461729c5680dba"
+        ],
+        "purpose": "Retrieve registered metadata before mixing indices, percentages, areas or adjustments.",
+        "finding": "One bounded synthetic catalog POST with a fake temporary key supplies five metadata records. Four explicit dimension checks admit two candidates. Real registration is required, but no live key or registered catalog was exercised."
+      }
+    },
+    {
+      "object": {
+        "schema": "main",
+        "name": "latest"
+      },
+      "notebook": "02_popular_does_not_mean_comparable.ipynb",
+      "sql": [
+        {
+          "cell": "latest-sql",
+          "reference": "bls.main.latest"
+        }
+      ],
+      "narrative_cells": [
+        "latest-story"
+      ],
+      "result_cells": [
+        "latest-sql",
+        "aligned-result",
+        "lag-chart",
+        "checks-result"
+      ],
+      "interpretation_cells": [
+        "aligned-result"
+      ],
+      "review": {
+        "status": "approved",
+        "reviewer": "Codex /root/notebooks_ortools",
+        "reviewed_at": "2026-11-14T23:20:55.016504+00:00",
+        "notebook_sha256": "132d0318387e34eaa9733fd84fe13227e2ddf5f1d71e80a621507c82af768f2e",
+        "catalog_sha256": [
+          "2acd3f0b426b41c19482be5fdfe5adbd865cf7889d727e09853fc8d425914216",
+          "6355cb62ae361fc6e5e655c2dc4dcf1acf6239717e87552c13461729c5680dba"
+        ],
+        "purpose": "Separate latest-per-series observation periods from synchronized measurement and publication dates.",
+        "finding": "All five synthetic latest flags are true, but comparable candidates cover November and December. MAX_LAG_MONTHS0→1 admits the delayed series without changing periods/values; eight local calls remain fixed. No real-time publication or real BLS freshness claim."
+      }
+    }
+  ]
+}

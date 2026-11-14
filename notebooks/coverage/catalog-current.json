@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "repository": "Query-farm/vgi-bls",
+  "revision": "1b7045156ef1ff435fcb5db1aa8c02b497517b02",
+  "captured_at": "2026-11-14T23:20:55.016504+00:00",
+  "default_schema": "main",
+  "scope": "all_public_functions_and_tables",
+  "complete": true,
+  "evidence": [
+    {
+      "path": "coverage/catalog-provenance.json",
+      "sha256": "10553a0d24acba94e1023a3ad8c67c19aa8e029f39dba31f7733d90db4984fe1",
+      "description": "Release/current actual launches and synthetic/live credential boundaries."
+    },
+    {
+      "path": "coverage/current-functions.json",
+      "sha256": "cd3d4a53db17c083e8a382e9ba2c3b272af1bcdf150bda58947a97506dd60af1",
+      "description": "Complete actual worker-filtered duckdb_functions() native export; every public schema/name retained."
+    },
+    {
+      "path": "coverage/current-tables.json",
+      "sha256": "2975bec05b25dbf62ec82cfe97d2827cc58ecabf3e0e3a057af4d4a02f18dbdc",
+      "description": "Complete actual worker-filtered duckdb_tables() native export; every public schema/name retained."
+    },
+    {
+      "path": "coverage/current-views.json",
+      "sha256": "9000c4727dcca8a247fe5f15de542889dfdab682d33b09450cc19e52e9b15a25",
+      "description": "Complete actual worker-filtered duckdb_views() native export; every public schema/name retained."
+    },
+    {
+      "path": "coverage/current-database.json",
+      "sha256": "c98bada8793266075b727c5d66c8a630614761f7fbda757a1bb47ade035affe4",
+      "description": "Actual catalog title/subtitle and metadata."
+    },
+    {
+      "path": "coverage/current-source-registration.json",
+      "sha256": "8110575a95c4aa08b208d6eb935130ecca414cfe785096972a37b3b4a3c4511d",
+      "description": "Full current registry/source texts and complete release-to-current source/dependency diff."
+    }
+  ],
+  "objects": [
+    {
+      "schema": "main",
+      "name": "popular_series",
+      "kind": "function",
+      "signatures": [
+        "popular_series(VARCHAR, BIGINT) -> TABLE"
+      ],
+      "authentication": "optional",
+      "access": "read"
+    },
+    {
+      "schema": "main",
+      "name": "series",
+      "kind": "function",
+      "signatures": [
+        "series(VARCHAR[], BIGINT, BIGINT, BIGINT) -> TABLE"
+      ],
+      "authentication": "required",
+      "access": "read"
+    },
+    {
+      "schema": "main",
+      "name": "observations",
+      "kind": "function",
+      "signatures": [
+        "observations(VARCHAR[], BIGINT, BIGINT, BIGINT, BOOLEAN, BOOLEAN, BOOLEAN, BOOLEAN) -> TABLE"
+      ],
+      "authentication": "optional",
+      "access": "read"
+    },
+    {
+      "schema": "main",
+      "name": "latest",
+      "kind": "function",
+      "signatures": [
+        "latest(VARCHAR, BIGINT) -> TABLE"
+      ],
+      "authentication": "optional",
+      "access": "read"
+    },
+    {
+      "schema": "main",
+      "name": "surveys",
+      "kind": "function",
+      "signatures": [
+        "surveys(VARCHAR, BIGINT) -> TABLE"
+      ],
+      "authentication": "optional",
+      "access": "read"
+    }
+  ]
+}

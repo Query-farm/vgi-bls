@@ -201,3 +201,5 @@ Metadata checks run against local API fixtures so repeated lint runs do not cons
 ## Notebooks
 
 [Price levels and inflation](notebooks/README.md) — an executed public-data walkthrough that separates CPI levels from 12-month changes and tests the effect of changing the display reference month.
+
+The [notebook index](notebooks/README.md) also demonstrates metadata and observation-period selection with an explicitly synthetic local discovery service, shared Colab setup and verified SQL surface coverage.

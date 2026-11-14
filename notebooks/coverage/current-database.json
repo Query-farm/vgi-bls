@@ -1,0 +1,48 @@
+{
+  "query": "SELECT * FROM duckdb_databases() WHERE database_name='bls'",
+  "columns": [
+    "database_name",
+    "database_oid",
+    "path",
+    "comment",
+    "tags",
+    "internal",
+    "type",
+    "readonly",
+    "encrypted",
+    "cipher",
+    "options"
+  ],
+  "rows": [
+    [
+      "bls",
+      22592,
+      null,
+      "# vgi-bls\n\nRetrieve labor, employment, price and productivity series with period codes, footnotes, calculations and survey metadata. Use a bls_api secret with api_key or BLS_API_KEY for registered access. Unregistered access has lower limits. Request explicit years and series identifiers; period codes retain annual averages and non-monthly frequencies without inventing dates. NULL arguments are rejected. Missing optional response fields return NULL. Upstream errors fail the query; SQL WHERE filters are local.\n\nQueries use bounded HTTP responses and retries. Credentials stay out of continuation state. See README.md for deployment and operational limits.",
+      {
+        "vgi.agent_test_tasks": "[{\"name\": \"surveys\", \"prompt\": \"Using bls.main.surveys, discover bls surveys. Use the arguments in this example and return the same columns: SELECT survey_abbreviation, survey_name FROM bls.main.surveys() ORDER BY survey_abbreviation\"}, {\"name\": \"popular_series\", \"prompt\": \"Using bls.main.popular_series, discover popular series. Use the arguments in this example and return the same columns: SELECT series_id FROM bls.main.popular_series(survey := 'CU') ORDER BY series_id\"}, {\"name\": \"observations\", \"prompt\": \"Using bls.main.observations, retrieve labor statistics. Use the arguments in this example and return the same columns: SELECT year, period, value FROM bls.main.observations(['LNS14000000'], 2024, 2024) ORDER BY year, period\"}, {\"name\": \"series\", \"prompt\": \"Using bls.main.series, inspect series metadata. Use the arguments in this example and return the same columns: SELECT series_id, series_title, seasonality FROM bls.main.series(['LNS14000000'], 2024, 2024) ORDER BY series_id\"}, {\"name\": \"latest\", \"prompt\": \"Using bls.main.latest, read latest observation. Use the arguments in this example and return the same columns: SELECT series_id, year, period, value FROM bls.main.latest('LNS14000000') ORDER BY year, period\"}, {\"name\": \"popular_series_per_survey\", \"prompt\": \"Using bls.main.popular_series (overall, no survey argument) and bls.main.surveys, count the popular series in each survey, matching a series to its survey by the series identifier's two-letter prefix. Return columns survey_abbreviation (VARCHAR), survey_name (VARCHAR) and popular_count (BIGINT), one row per survey that has at least one popular series, ordered by survey_abbreviation.\"}, {\"name\": \"cpi_title_and_peak_2024\", \"prompt\": \"For BLS series CUUR0000SA0 in 2024, return its published series title from bls.main.series together with the highest monthly value from bls.main.observations (monthly periods M01-M12 only; ignore NULL values). Return one row with columns series_id (VARCHAR), series_title (VARCHAR) and peak_value (DOUBLE).\"}]",
+        "vgi.author": "Query.Farm",
+        "vgi.copyright": "Copyright 2026 Query.Farm contributors",
+        "vgi.doc_llm": "Retrieve labor, employment, price and productivity series with period codes, footnotes, calculations and survey metadata. Use a bls_api secret with api_key or BLS_API_KEY for registered access. Unregistered access has lower limits. Request explicit years and series identifiers; period codes retain annual averages and non-monthly frequencies without inventing dates. NULL arguments are rejected. Missing optional response fields return NULL. Upstream errors fail the query; SQL WHERE filters are local.",
+        "vgi.doc_md": "# vgi-bls\n\nRetrieve labor, employment, price and productivity series with period codes, footnotes, calculations and survey metadata. Use a bls_api secret with api_key or BLS_API_KEY for registered access. Unregistered access has lower limits. Request explicit years and series identifiers; period codes retain annual averages and non-monthly frequencies without inventing dates. NULL arguments are rejected. Missing optional response fields return NULL. Upstream errors fail the query; SQL WHERE filters are local.\n\nQueries use bounded HTTP responses and retries. Credentials stay out of continuation state. See README.md for deployment and operational limits.",
+        "vgi.executable_examples": "[{\"name\": \"discover_surveys\", \"description\": \"Discover available functions without credentials or API requests\", \"sql\": \"SELECT function_name FROM duckdb_functions() WHERE database_name = 'bls' AND function_name = 'surveys' ORDER BY function_name\", \"expected_result\": [{\"function_name\": \"surveys\"}]}]",
+        "vgi.icon_url": "https://query.farm/media-kit/products/vgi/vgi-logo.png",
+        "vgi.keywords": "[\"bls\", \"economics\", \"public data\", \"time series\", \"duckdb\", \"sql\"]",
+        "vgi.license": "0BSD",
+        "vgi.source_url": "https://github.com/Query-farm/vgi-bls",
+        "vgi.subtitle": "Retrieve labor, employment, price and productivity series with period codes, footnotes, calculations and survey metadata.",
+        "vgi.support_contact": "https://github.com/Query-farm/vgi-bls/issues",
+        "vgi.support_policy_url": "https://github.com/Query-farm/vgi-bls/blob/main/README.md",
+        "vgi.title": "Bureau of Labor Statistics"
+      },
+      false,
+      "vgi",
+      false,
+      false,
+      null,
+      {
+        "location": "uvx --from git+https://github.com/Query-farm/vgi-bls@1b7045156ef1ff435fcb5db1aa8c02b497517b02 vgi-bls-worker"
+      }
+    ]
+  ]
+}

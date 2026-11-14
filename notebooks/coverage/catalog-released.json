@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "repository": "Query-farm/vgi-bls",
+  "revision": "v0.1.0",
+  "captured_at": "2026-11-14T23:20:55.016504+00:00",
+  "default_schema": "main",
+  "scope": "all_public_functions_and_tables",
+  "complete": true,
+  "evidence": [
+    {
+      "path": "coverage/catalog-provenance.json",
+      "sha256": "10553a0d24acba94e1023a3ad8c67c19aa8e029f39dba31f7733d90db4984fe1",
+      "description": "Release/current actual launches and synthetic/live credential boundaries."
+    },
+    {
+      "path": "coverage/released-functions.json",
+      "sha256": "80cf6e3d62fba8b67eb6943f28e0db30d14aa54d66fe1faa4d971ce7a217f487",
+      "description": "Complete actual worker-filtered duckdb_functions() native export; every public schema/name retained."
+    },
+    {
+      "path": "coverage/released-tables.json",
+      "sha256": "2975bec05b25dbf62ec82cfe97d2827cc58ecabf3e0e3a057af4d4a02f18dbdc",
+      "description": "Complete actual worker-filtered duckdb_tables() native export; every public schema/name retained."
+    },
+    {
+      "path": "coverage/released-views.json",
+      "sha256": "9000c4727dcca8a247fe5f15de542889dfdab682d33b09450cc19e52e9b15a25",
+      "description": "Complete actual worker-filtered duckdb_views() native export; every public schema/name retained."
+    },
+    {
+      "path": "coverage/released-database.json",
+      "sha256": "ea05baedb00f2ea3000eba97717f2f528147e0d19edd39e6a75e34cabfc35d2f",
+      "description": "Actual catalog title/subtitle and metadata."
+    }
+  ],
+  "objects": [
+    {
+      "schema": "main",
+      "name": "popular_series",
+      "kind": "function",
+      "signatures": [
+        "popular_series(VARCHAR, BIGINT) -> TABLE"
+      ],
+      "authentication": "optional",
+      "access": "read"
+    },
+    {
+      "schema": "main",
+      "name": "series",
+      "kind": "function",
+      "signatures": [
+        "series(VARCHAR[], BIGINT, BIGINT, BIGINT) -> TABLE"
+      ],
+      "authentication": "required",
+      "access": "read"
+    },
+    {
+      "schema": "main",
+      "name": "observations",
+      "kind": "function",
+      "signatures": [
+        "observations(VARCHAR[], BIGINT, BIGINT, BIGINT, BOOLEAN, BOOLEAN, BOOLEAN, BOOLEAN) -> TABLE"
+      ],
+      "authentication": "optional",
+      "access": "read"
+    },
+    {
+      "schema": "main",
+      "name": "latest",
+      "kind": "function",
+      "signatures": [
+        "latest(VARCHAR, BIGINT) -> TABLE"
+      ],
+      "authentication": "optional",
+      "access": "read"
+    },
+    {
+      "schema": "main",
+      "name": "surveys",
+      "kind": "function",
+      "signatures": [
+        "surveys(VARCHAR, BIGINT) -> TABLE"
+      ],
+      "authentication": "optional",
+      "access": "read"
+    }
+  ]
+}
