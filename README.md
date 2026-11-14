@@ -187,3 +187,7 @@ API references: [BLS signatures](https://www.bls.gov/developers/api_signature_v2
 and [limits and registration FAQ](https://www.bls.gov/developers/api_faqs.htm).
 
 Metadata checks run against local API fixtures so repeated lint runs do not consume public BLS quota. Live public API verification is a separate `make smoke-live` target.
+
+## Notebooks
+
+[Price levels and inflation](notebooks/README.md) — an executed public-data walkthrough that separates CPI levels from 12-month changes and tests the effect of changing the display reference month.
