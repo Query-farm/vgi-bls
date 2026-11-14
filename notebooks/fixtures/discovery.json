@@ -1,0 +1,171 @@
+{
+  "provenance": {
+    "kind": "synthetic",
+    "description": "Entirely authored illustrative survey metadata, identifiers, periods and values; not BLS responses or estimates. Response shapes follow the released worker contract. No real registration key or external service is used."
+  },
+  "surveys": [
+    {
+      "survey_abbreviation": "CU",
+      "survey_name": "Synthetic consumer prices",
+      "allowsNetChange": "true",
+      "allowsPercentChange": "true",
+      "hasAnnualAverages": "true"
+    },
+    {
+      "survey_abbreviation": "LN",
+      "survey_name": "Synthetic labor force",
+      "allowsPercentChange": "true"
+    },
+    {
+      "survey_abbreviation": "WP",
+      "survey_name": "Synthetic producer prices",
+      "allowsNetChange": "false",
+      "allowsPercentChange": "true",
+      "hasAnnualAverages": "false"
+    }
+  ],
+  "popular_ids": [
+    "CUDEMOLEVEL",
+    "CUDEMOLAG",
+    "CUDEMOSA",
+    "CUDEMOREGION",
+    "LNDEMORATE"
+  ],
+  "series": [
+    {
+      "seriesID": "CUDEMOLEVEL",
+      "catalog": {
+        "series_title": "Illustrative all-items index",
+        "survey_name": "Synthetic consumer prices",
+        "survey_abbreviation": "CU",
+        "seasonality": "Not Seasonally Adjusted",
+        "measure_data_type": "Index, synthetic base=100",
+        "area": "United States",
+        "synthetic": true
+      },
+      "data": [
+        {
+          "year": "2024",
+          "period": "M12",
+          "periodName": "December",
+          "value": "110.0",
+          "latest": "true",
+          "footnotes": [
+            {
+              "code": "S",
+              "text": "Synthetic teaching fixture; not a published BLS estimate."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "seriesID": "CUDEMOLAG",
+      "catalog": {
+        "series_title": "Illustrative core index, delayed period",
+        "survey_name": "Synthetic consumer prices",
+        "survey_abbreviation": "CU",
+        "seasonality": "Not Seasonally Adjusted",
+        "measure_data_type": "Index, synthetic base=100",
+        "area": "United States",
+        "synthetic": true
+      },
+      "data": [
+        {
+          "year": "2024",
+          "period": "M11",
+          "periodName": "November",
+          "value": "108.0",
+          "latest": "true",
+          "footnotes": [
+            {
+              "code": "S",
+              "text": "Synthetic teaching fixture; not a published BLS estimate."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "seriesID": "CUDEMOSA",
+      "catalog": {
+        "series_title": "Illustrative seasonally adjusted index",
+        "survey_name": "Synthetic consumer prices",
+        "survey_abbreviation": "CU",
+        "seasonality": "Seasonally Adjusted",
+        "measure_data_type": "Index, synthetic base=100",
+        "area": "United States",
+        "synthetic": true
+      },
+      "data": [
+        {
+          "year": "2024",
+          "period": "M12",
+          "periodName": "December",
+          "value": "109.0",
+          "latest": "true",
+          "footnotes": [
+            {
+              "code": "S",
+              "text": "Synthetic teaching fixture; not a published BLS estimate."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "seriesID": "CUDEMOREGION",
+      "catalog": {
+        "series_title": "Illustrative regional price index",
+        "survey_name": "Synthetic consumer prices",
+        "survey_abbreviation": "CU",
+        "seasonality": "Not Seasonally Adjusted",
+        "measure_data_type": "Index, synthetic base=100",
+        "area": "Region A",
+        "synthetic": true
+      },
+      "data": [
+        {
+          "year": "2024",
+          "period": "M12",
+          "periodName": "December",
+          "value": "115.0",
+          "latest": "true",
+          "footnotes": [
+            {
+              "code": "S",
+              "text": "Synthetic teaching fixture; not a published BLS estimate."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "seriesID": "LNDEMORATE",
+      "catalog": {
+        "series_title": "Illustrative unemployment rate",
+        "survey_name": "Synthetic labor force",
+        "survey_abbreviation": "LN",
+        "seasonality": "Seasonally Adjusted",
+        "measure_data_type": "Percent",
+        "area": "United States",
+        "synthetic": true
+      },
+      "data": [
+        {
+          "year": "2024",
+          "period": "M12",
+          "periodName": "December",
+          "value": "4.5",
+          "latest": "true",
+          "footnotes": [
+            {
+              "code": "S",
+              "text": "Synthetic teaching fixture; not a published BLS estimate."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
