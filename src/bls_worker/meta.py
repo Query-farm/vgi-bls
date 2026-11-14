@@ -133,8 +133,9 @@ POPULAR_WITH_SURVEY_NAMES = FunctionExample(
 )
 LATEST_VS_YEAR_EARLIER = FunctionExample(
     description=(
-        "Compare the latest unemployment rate with the same period one year earlier, "
-        "joining latest to an observations window that covers the prior year"
+        "Compare the latest unemployment rate with the same period one year earlier and "
+        "the change; the observations window (2023-2026) must include the year before the "
+        "latest period, so move it forward as new years are published"
     ),
     sql=(
         "SELECT l.year, l.period, l.value AS latest_value, p.value AS year_earlier_value, "
@@ -148,12 +149,13 @@ LATEST_VS_YEAR_EARLIER = FunctionExample(
 ANNUAL_AVERAGES_WITH_TITLES = FunctionExample(
     description=(
         "Label 2024 annual averages (period M13) with each series' published title and "
-        "seasonality; requires a BLS registration key"
+        "seasonality; BLS publishes annual averages for not seasonally adjusted series such as "
+        "LNU04000000 and CUUR0000SA0, and they require a BLS registration key"
     ),
     sql=(
         "SELECT o.series_id, m.series_title, m.seasonality, o.value AS annual_average "
-        "FROM bls.main.observations(['LNS14000000', 'CUUR0000SA0'], 2024, 2024, annual_average := true) AS o "
-        "JOIN bls.main.series(['LNS14000000', 'CUUR0000SA0'], 2024, 2024) AS m USING (series_id) "
+        "FROM bls.main.observations(['LNU04000000', 'CUUR0000SA0'], 2024, 2024, annual_average := true) AS o "
+        "JOIN bls.main.series(['LNU04000000', 'CUUR0000SA0'], 2024, 2024) AS m USING (series_id) "
         "WHERE o.period = 'M13' "
         "ORDER BY o.series_id"
     ),

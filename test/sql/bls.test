@@ -101,10 +101,10 @@ SELECT l.year, l.period, l.value AS latest_value, p.value AS year_earlier_value,
 
 # composed: annual averages labelled with typed catalog metadata (meta.ANNUAL_AVERAGES_WITH_TITLES)
 query TTTT
-SELECT o.series_id, m.series_title, m.seasonality, o.value AS annual_average FROM bls.main.observations(['LNS14000000', 'CUUR0000SA0'], 2024, 2024, annual_average := true) AS o JOIN bls.main.series(['LNS14000000', 'CUUR0000SA0'], 2024, 2024) AS m USING (series_id) WHERE o.period = 'M13' ORDER BY o.series_id;
+SELECT o.series_id, m.series_title, m.seasonality, o.value AS annual_average FROM bls.main.observations(['LNU04000000', 'CUUR0000SA0'], 2024, 2024, annual_average := true) AS o JOIN bls.main.series(['LNU04000000', 'CUUR0000SA0'], 2024, 2024) AS m USING (series_id) WHERE o.period = 'M13' ORDER BY o.series_id;
 ----
 CUUR0000SA0	Fixture CUUR0000SA0	Seasonally Adjusted	3.25
-LNS14000000	Fixture LNS14000000	Seasonally Adjusted	3.25
+LNU04000000	Fixture LNU04000000	Seasonally Adjusted	3.25
 
 # agent grader: popular_series_per_survey (vgi-agent-tests.yaml)
 query TTI
