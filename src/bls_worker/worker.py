@@ -20,6 +20,7 @@ from .meta import (
     CATALOG_DOC_MD,
     CATALOG_NAME,
     CATALOG_TAGS,
+    COMPOSED_AGENT_TASKS,
     SCHEMA_CATEGORIES,
     SCHEMA_DOC_LLM,
     SCHEMA_DOC_MD,
@@ -56,6 +57,7 @@ CATALOG_TAGS["vgi.agent_test_tasks"] = json.dumps(
         }
         for fn in FUNCTIONS
     ]
+    + COMPOSED_AGENT_TASKS
 )
 
 

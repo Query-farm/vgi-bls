@@ -12,6 +12,7 @@ tags. Keep every object documented and ``make lint`` stays at 100.
 from __future__ import annotations
 
 import json
+from collections.abc import Sequence
 from typing import Any
 
 import pyarrow as pa
@@ -116,8 +117,85 @@ CATALOG_TAGS = {
 }
 
 
-def function_meta(name: str, title: str, description: str, schema: pa.Schema, sql: str) -> Any:
-    """Build consistent, discoverable metadata for an authenticated table function."""
+# Composed examples: each combines two of the worker's functions in one query.
+# Each is listed on the function that drives it and on the schema-level list.
+POPULAR_WITH_SURVEY_NAMES = FunctionExample(
+    description=(
+        "Label popular series with the name of the survey they belong to; a BLS series "
+        "identifier starts with its two-letter survey abbreviation"
+    ),
+    sql=(
+        "SELECT p.series_id, s.survey_abbreviation, s.survey_name "
+        "FROM bls.main.popular_series() AS p "
+        "JOIN bls.main.surveys() AS s ON s.survey_abbreviation = left(p.series_id, 2) "
+        "ORDER BY p.series_id"
+    ),
+)
+LATEST_VS_YEAR_EARLIER = FunctionExample(
+    description=(
+        "Compare the latest unemployment rate with the same period one year earlier, "
+        "joining latest to an observations window that covers the prior year"
+    ),
+    sql=(
+        "SELECT l.year, l.period, l.value AS latest_value, p.value AS year_earlier_value, "
+        "l.value - p.value AS change "
+        "FROM bls.main.latest('LNS14000000') AS l "
+        "JOIN bls.main.observations(['LNS14000000'], 2023, 2026) AS p "
+        "ON p.series_id = l.series_id AND p.period = l.period AND p.year = l.year - 1 "
+        "ORDER BY l.year, l.period"
+    ),
+)
+ANNUAL_AVERAGES_WITH_TITLES = FunctionExample(
+    description=(
+        "Label 2024 annual averages (period M13) with each series' published title and "
+        "seasonality; requires a BLS registration key"
+    ),
+    sql=(
+        "SELECT o.series_id, m.series_title, m.seasonality, o.value AS annual_average "
+        "FROM bls.main.observations(['LNS14000000', 'CUUR0000SA0'], 2024, 2024, annual_average := true) AS o "
+        "JOIN bls.main.series(['LNS14000000', 'CUUR0000SA0'], 2024, 2024) AS m USING (series_id) "
+        "WHERE o.period = 'M13' "
+        "ORDER BY o.series_id"
+    ),
+)
+
+# Agent tasks that need two functions. Graders live in vgi-agent-tests.yaml.
+COMPOSED_AGENT_TASKS = [
+    {
+        "name": "popular_series_per_survey",
+        "prompt": (
+            "Using bls.main.popular_series (overall, no survey argument) and bls.main.surveys, count the "
+            "popular series in each survey, matching a series to its survey by the series identifier's "
+            "two-letter prefix. Return columns survey_abbreviation (VARCHAR), survey_name (VARCHAR) and "
+            "popular_count (BIGINT), one row per survey that has at least one popular series, ordered by "
+            "survey_abbreviation."
+        ),
+    },
+    {
+        "name": "cpi_title_and_peak_2024",
+        "prompt": (
+            "For BLS series CUUR0000SA0 in 2024, return its published series title from bls.main.series "
+            "together with the highest monthly value from bls.main.observations (monthly periods M01-M12 "
+            "only; ignore NULL values). Return one row with columns series_id (VARCHAR), series_title "
+            "(VARCHAR) and peak_value (DOUBLE)."
+        ),
+    },
+]
+
+
+def function_meta(
+    name: str,
+    title: str,
+    description: str,
+    schema: pa.Schema,
+    sql: str,
+    composed: Sequence[FunctionExample] = (),
+) -> Any:
+    """Build consistent, discoverable metadata for an authenticated table function.
+
+    ``composed`` examples follow the function's own example, so they stay within
+    the first five examples agents are shown.
+    """
     types = {
         "string": "VARCHAR",
         "int64": "BIGINT",
@@ -155,5 +233,5 @@ def function_meta(name: str, title: str, description: str, schema: pa.Schema, sq
             ]
         ),
     }
-    Meta.examples = [FunctionExample(sql=sql, description=title)]
+    Meta.examples = [FunctionExample(sql=sql, description=title), *composed]
     return Meta

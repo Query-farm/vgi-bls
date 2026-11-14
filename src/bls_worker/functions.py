@@ -16,7 +16,13 @@ from vgi.table_function import BindParams, OutputCollector, ProcessParams, Table
 from vgi_rpc import ArrowSerializableDataclass
 
 from .api import SECRET_TYPE, call, credential, records
-from .meta import column, function_meta
+from .meta import (
+    ANNUAL_AVERAGES_WITH_TITLES,
+    LATEST_VS_YEAR_EARLIER,
+    POPULAR_WITH_SURVEY_NAMES,
+    column,
+    function_meta,
+)
 from .transport import ApiError
 
 SURVEYS = pa.schema(
@@ -382,6 +388,7 @@ class PopularSeries(BlsFunction[SurveyArgs]):
         ),
         POPULAR,
         "SELECT series_id FROM bls.main.popular_series(survey := 'CU') ORDER BY series_id",
+        composed=[POPULAR_WITH_SURVEY_NAMES],
     )
 
     @classmethod
@@ -409,6 +416,7 @@ class Observations(BlsFunction[ObservationArgs]):
         ),
         OBSERVATIONS,
         ("SELECT year, period, value FROM bls.main.observations(['LNS14000000'], 2024, 2024) ORDER BY year, period"),
+        composed=[ANNUAL_AVERAGES_WITH_TITLES],
     )
 
     @classmethod
@@ -470,6 +478,7 @@ class Latest(BlsFunction[LatestArgs]):
         ),
         OBSERVATIONS,
         "SELECT series_id, year, period, value FROM bls.main.latest('LNS14000000') ORDER BY year, period",
+        composed=[LATEST_VS_YEAR_EARLIER],
     )
 
     @classmethod

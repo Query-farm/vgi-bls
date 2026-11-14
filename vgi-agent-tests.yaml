@@ -19,6 +19,14 @@
     {
       "name": "latest",
       "reference_sql": "SELECT series_id, year, period, value FROM bls.main.latest('LNS14000000') ORDER BY year, period"
+    },
+    {
+      "name": "popular_series_per_survey",
+      "reference_sql": "SELECT s.survey_abbreviation, s.survey_name, count(*) AS popular_count FROM bls.main.popular_series() AS p JOIN bls.main.surveys() AS s ON s.survey_abbreviation = left(p.series_id, 2) GROUP BY ALL ORDER BY s.survey_abbreviation"
+    },
+    {
+      "name": "cpi_title_and_peak_2024",
+      "reference_sql": "SELECT m.series_id, m.series_title, max(o.value) AS peak_value FROM bls.main.series(['CUUR0000SA0'], 2024, 2024) AS m JOIN bls.main.observations(['CUUR0000SA0'], 2024, 2024) AS o USING (series_id) WHERE o.period BETWEEN 'M01' AND 'M12' GROUP BY ALL ORDER BY m.series_id"
     }
   ]
 }

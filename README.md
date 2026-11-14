@@ -73,6 +73,16 @@ FROM bls.main.observations(['LNS14000000', 'CUUR0000SA0'], 2023, 2024,
 ORDER BY series_id, year, period;
 ```
 
+Functions combine in one query. A series identifier starts with its two-letter
+survey abbreviation, so popular series can be labelled with their survey:
+
+```sql
+SELECT p.series_id, s.survey_abbreviation, s.survey_name
+FROM bls.main.popular_series() AS p
+JOIN bls.main.surveys() AS s ON s.survey_abbreviation = left(p.series_id, 2)
+ORDER BY p.series_id;
+```
+
 ### Data semantics and complete results
 
 - `year` is BIGINT and `period` retains BLS's native code. `M13` is an annual

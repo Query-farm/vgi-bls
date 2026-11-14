@@ -86,6 +86,39 @@ SELECT series_id, year, period, value, latest FROM bls.main.latest('LNS14000000'
 ----
 LNS14000000	2024	M12	3.75	true
 
+# composed: popular series labelled with their survey (meta.POPULAR_WITH_SURVEY_NAMES)
+query TTT
+SELECT p.series_id, s.survey_abbreviation, s.survey_name FROM bls.main.popular_series() AS p JOIN bls.main.surveys() AS s ON s.survey_abbreviation = left(p.series_id, 2) ORDER BY p.series_id;
+----
+CUUR0000SA0	CU	Fixture consumer prices
+LNS14000000	LN	Fixture labor force
+
+# composed: latest versus the same period a year earlier (meta.LATEST_VS_YEAR_EARLIER)
+query TTTTT
+SELECT l.year, l.period, l.value AS latest_value, p.value AS year_earlier_value, l.value - p.value AS change FROM bls.main.latest('LNS14000000') AS l JOIN bls.main.observations(['LNS14000000'], 2023, 2026) AS p ON p.series_id = l.series_id AND p.period = l.period AND p.year = l.year - 1 ORDER BY l.year, l.period;
+----
+2024	M12	3.75	3.75	0.0
+
+# composed: annual averages labelled with typed catalog metadata (meta.ANNUAL_AVERAGES_WITH_TITLES)
+query TTTT
+SELECT o.series_id, m.series_title, m.seasonality, o.value AS annual_average FROM bls.main.observations(['LNS14000000', 'CUUR0000SA0'], 2024, 2024, annual_average := true) AS o JOIN bls.main.series(['LNS14000000', 'CUUR0000SA0'], 2024, 2024) AS m USING (series_id) WHERE o.period = 'M13' ORDER BY o.series_id;
+----
+CUUR0000SA0	Fixture CUUR0000SA0	Seasonally Adjusted	3.25
+LNS14000000	Fixture LNS14000000	Seasonally Adjusted	3.25
+
+# agent grader: popular_series_per_survey (vgi-agent-tests.yaml)
+query TTI
+SELECT s.survey_abbreviation, s.survey_name, count(*) AS popular_count FROM bls.main.popular_series() AS p JOIN bls.main.surveys() AS s ON s.survey_abbreviation = left(p.series_id, 2) GROUP BY ALL ORDER BY s.survey_abbreviation;
+----
+CU	Fixture consumer prices	1
+LN	Fixture labor force	1
+
+# agent grader: cpi_title_and_peak_2024 (vgi-agent-tests.yaml)
+query TTT
+SELECT m.series_id, m.series_title, max(o.value) AS peak_value FROM bls.main.series(['CUUR0000SA0'], 2024, 2024) AS m JOIN bls.main.observations(['CUUR0000SA0'], 2024, 2024) AS o USING (series_id) WHERE o.period BETWEEN 'M01' AND 'M12' GROUP BY ALL ORDER BY m.series_id;
+----
+CUUR0000SA0	Fixture CUUR0000SA0	3.75
+
 # encoded identifier
 query T
 SELECT series_id FROM bls.main.latest('TEST#ID');
