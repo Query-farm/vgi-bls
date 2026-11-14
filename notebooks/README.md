@@ -37,3 +37,12 @@ One bounded worker call requests two series for inclusive years 2019–2024 and 
 Source pages: [all items](https://data.bls.gov/timeseries/CUUR0000SA0), [less food and energy](https://data.bls.gov/timeseries/CUUR0000SA0L1E), [CPI series IDs](https://www.bls.gov/cpi/factsheets/cpi-series-ids.htm), [CPI FAQ](https://www.bls.gov/cpi/questions-and-answers.htm), [API documentation](https://www.bls.gov/developers/). The notebook records UTC retrieval bounds, original value text and footnotes. Monthly dates label observation periods, not publication dates. M13 and other native nonmonthly codes are excluded from the monthly calendar rather than fabricated into dates.
 
 Missing periods/values remain NULL and create chart gaps. Annual comparisons join the same calendar month a year earlier. Rebasing changes displayed levels but must preserve proportional changes; an invariant checks that equality. These aggregate indexes do not describe every household, identify causes, forecast future outcomes or reconstruct historical release vintages.
+
+## SQL credential isolation
+
+The notebook creates Haybarn with a fresh temporary `secret_directory` and
+`allow_persistent_secrets=False` before attaching workers. It fully drains and
+checks an empty secret inventory. This example needs no saved SQL credential;
+its explicit public-data or local-fixture configuration remains in effect.
+Cleanup removes the temporary directory after closing the connection.
+Existing user SQL secrets are neither read, modified nor deleted.
