@@ -22,6 +22,7 @@ from .meta import (
     CATALOG_TAGS,
     COMPOSED_AGENT_TASKS,
     SCHEMA_CATEGORIES,
+    SCHEMA_COMMENT,
     SCHEMA_DOC_LLM,
     SCHEMA_DOC_MD,
     SOURCE_URL,
@@ -72,7 +73,7 @@ class BlsWorker(Worker):
         schemas=[
             Schema(
                 path=["main"],
-                comment=SCHEMA_DOC_MD,
+                comment=SCHEMA_COMMENT,
                 functions=FUNCTIONS,
                 tags={
                     "vgi.title": "Bls Functions",

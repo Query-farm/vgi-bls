@@ -1,6 +1,6 @@
 [project]
 name = "vgi-bls-worker"
-version = "0.1.1"
+version = "0.1.2"
 description = "Bureau of Labor Statistics data through typed VGI SQL functions."
 readme = "README.md"
 license = "0BSD"

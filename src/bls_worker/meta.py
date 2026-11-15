@@ -77,6 +77,13 @@ CATALOG_DOC_LLM = (
     "Missing optional response fields return NULL. Upstream errors fail the query; SQL "
     "WHERE filters are local."
 )
+CATALOG_SOURCES_MD = (
+    "\n\n## Sources and references\n\n"
+    "- [U.S. Bureau of Labor Statistics](https://www.bls.gov/)\n"
+    "- [BLS Public Data API: getting started](https://www.bls.gov/developers/)\n"
+    "- [API v2 request and response signatures](https://www.bls.gov/developers/api_signature_v2.htm)\n"
+    "- [Register for a BLS API key](https://data.bls.gov/registrationEngine/)"
+)
 CATALOG_DOC_MD = (
     "# vgi-bls\n\n"
     + CATALOG_DOC_LLM
@@ -84,7 +91,9 @@ CATALOG_DOC_MD = (
         "\n\nQueries use bounded HTTP responses and retries. Credentials stay out of "
         "continuation state. See README.md for deployment and operational limits."
     )
+    + CATALOG_SOURCES_MD
 )
+SCHEMA_COMMENT = "BLS time series as table functions: observations, latest values, popular series and survey metadata."
 SCHEMA_DOC_LLM = CATALOG_DOC_LLM
 SCHEMA_DOC_MD = (
     "## main\n\n"
