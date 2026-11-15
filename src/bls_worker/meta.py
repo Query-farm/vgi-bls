@@ -59,6 +59,15 @@ def column(name: str, type_: pa.DataType, comment: str, *, nullable: bool = True
     return pa.field(name, type_, nullable=nullable, metadata={b"comment": comment.encode()})
 
 
+# The catalog comment is the worker's one-line directory description (VGI001):
+# plain text, one paragraph, at most 300 characters. Long-form docs live in
+# vgi.doc_md and agent guidance in vgi.doc_llm.
+CATALOG_COMMENT = (
+    "US Bureau of Labor Statistics time series for employment, unemployment, prices, "
+    "pay and productivity as SQL tables, keeping BLS period codes, footnotes and "
+    "survey metadata. Works without a key; a free BLS registration key raises the "
+    "limits."
+)
 CATALOG_DOC_LLM = (
     "Retrieve labor, employment, price and productivity series with period codes, "
     "footnotes, calculations and survey metadata. Use a bls_api secret with api_key or "
