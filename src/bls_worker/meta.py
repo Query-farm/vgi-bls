@@ -122,13 +122,13 @@ CATALOG_TAGS = {
     "vgi.executable_examples": json.dumps(
         [
             {
-                "name": "discover_surveys",
-                "description": "Discover available functions without credentials or API requests",
-                "sql": (
-                    "SELECT function_name FROM duckdb_functions() WHERE database_name = 'bls' AND "
-                    "function_name = 'surveys' ORDER BY function_name"
+                "name": "surveys_columns",
+                "description": (
+                    "Show the columns surveys() returns without an API key: binding the "
+                    "function with LIMIT 0 resolves its schema and makes no BLS API request"
                 ),
-                "expected_result": [{"function_name": "surveys"}],
+                "sql": "SELECT * FROM bls.main.surveys() LIMIT 0",
+                "expected_result": [],
             }
         ]
     ),
