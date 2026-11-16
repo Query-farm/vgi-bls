@@ -5,7 +5,7 @@ series from DuckDB through a Python VGI worker.
 
 ## Install and query
 
-Python 3.13 or newer is required. Install a wheel from GitHub Releases or run
+Python 3.14 or newer is required. Install a wheel from GitHub Releases or run
 `make build` in the locked source checkout.
 
 ```sql
@@ -168,7 +168,7 @@ base URLs are trusted operator settings; do not let untrusted users change them.
 make check          # Ruff, strict mypy, pydoclint, pytest, SQL transports, metadata, stock DuckDB
 make smoke-live     # Official public BLS checks; a registration key is optional
 make package        # Wheel and source distribution
-python3 ci/verify-artifacts.py --python 3.13
+python3 ci/verify-artifacts.py --python 3.14
 ```
 
 Deterministic tests use synthetic local data and a deliberately invalid public
@@ -177,7 +177,7 @@ registered SQL secrets, HTTP bearer authentication, empty data, partial-response
 rejection and original source annotations. Starter assertions remain under
 `examples/starter_samples` and run alongside the product suite.
 
-CI covers Python 3.13/3.14, Ubuntu stdio/launch/HTTP, Windows stdio/HTTP, metadata
+CI covers Python 3.14, Ubuntu stdio/launch/HTTP, Windows stdio/HTTP, metadata
 lint, stock DuckDB, both installed artifact formats, and Docker startup. Version
 tags gate GitHub releases on CI and attach signed wheel/source artifacts and
 build provenance. Nothing is published to PyPI. See `VERIFICATION.md` for results

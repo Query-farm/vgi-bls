@@ -220,7 +220,7 @@ def bls_http(api: ApiServer, tmp_path: Path) -> Iterator[str]:
                     with urllib.request.urlopen(location + "/health", timeout=0.5) as response:
                         if response.status == 200:
                             break
-                except (urllib.error.URLError, TimeoutError):
+                except urllib.error.URLError, TimeoutError:
                     if process.poll() is not None or time.monotonic() >= deadline:
                         pytest.fail("HTTP worker did not become ready")
                     time.sleep(0.05)
