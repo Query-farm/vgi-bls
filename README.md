@@ -3,6 +3,8 @@
 Query Bureau of Labor Statistics employment, inflation, wage and productivity
 series from DuckDB through a Python VGI worker.
 
+vgi-bls 0.2.0 speaks VGI protocol 3.4, so it needs Haybarn 2.0.1 or newer (Haybarn 2.0.0 loads a 3.3 `vgi` extension that cannot attach it).
+
 ## Install and query
 
 Python 3.14 or newer is required. Install a wheel from GitHub Releases or run
@@ -186,7 +188,7 @@ and live-service limitations.
 Starter: [Query-farm/vgi-starter-python](https://github.com/Query-farm/vgi-starter-python),
 revision `9cca9105474d6e0052b8e343c8ea21f3d1a7503c`, template 1.3.0.
 Runtime: `vgi-python>=0.51.1,<0.52`; the checked lock resolves vgi-python 0.51.1
-and vgi-rpc 0.53.1. Engines: stock DuckDB 2.0.0 and Haybarn 2.0.0rc11.
+and vgi-rpc 0.53.1. Engines: stock DuckDB 2.0.0 and Haybarn 2.0.1.
 Use `make template-diff` for compatible SDK updates.
 
 Report issues through this repository's GitHub issue tracker. Software license:
